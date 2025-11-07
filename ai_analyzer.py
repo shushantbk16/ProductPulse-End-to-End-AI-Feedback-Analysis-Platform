@@ -16,11 +16,11 @@ import os # Add this import at the top of ai_analyzer.py if it's not there
 # and rely on the library to find it, which is safer in Docker/Gunicorn.
 
 # Set the key in the environment *before* initialization (safest method)
-os.environ["GOOGLE_API_KEY"] = config.GOOGLE_API_KEY
+KEY_FROM_ENV = os.getenv("GOOGLE_API_KEY")
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
     temperature=0,
-    google_api_key=config.GOOGLE_API_KEY
+    google_api_key=KEY_FROM_ENV
 )
 
 # 2. Define our Prompts (The "Instructions") - THIS IS UNCHANGED
