@@ -1,9 +1,9 @@
 # Dockerfile
 
-# 1. Start from the OFFICIAL Playwright image.
-# It includes Python 3.10, Playwright, AND all the browsers.
-# This is the new, correct line
-FROM mcr.microsoft.com/playwright/python:v1.55.0-jammy
+# 1. Start from the OFFICIAL Playwright image (Uses a modern Python compatible with your requirements)
+FROM mcr.microsoft.com/playwright/python:v1.55.0-jammy 
+# Note: If the build fails again, try adding a comment to this line 
+# to force a pull, e.g., 'FROM mcr.microsoft.com/playwright/python:v1.55.0-jammy # 2025'
 
 # 2. Set the working directory
 WORKDIR /app
@@ -12,14 +12,11 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 4. We can REMOVE the "playwright install" step
-# because the browsers are already in the base image.
-
-# 5. Copy the rest of our app's code
+# 4. Copy the rest of our app's code
 COPY . .
 
-# 6. Expose the port
+# 5. Expose the port
 EXPOSE 8000
 
-# 7. Run the app
+# 6. Run the app
 CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:8000"]
