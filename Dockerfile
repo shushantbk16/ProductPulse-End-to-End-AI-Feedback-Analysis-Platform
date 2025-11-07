@@ -19,4 +19,6 @@ COPY . .
 EXPOSE 8000
 
 # 6. Run the app
-CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:8000"]
+# Dockerfile (Final CMD line)
+# The Gunicorn command is crashing the workers. We switch to the simpler Uvicorn command.
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
