@@ -8,20 +8,30 @@ from langchain_core.documents import Document
 from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
-# 1. Initialize the LLM (The "Brain")
-import os # Add this import at the top of ai_analyzer.py if it's not there
+# ai_analyzer.py
 
-# Initialize the LLM (The "Brain")
-# We will pass the key using the official environment variable name 
-# and rely on the library to find it, which is safer in Docker/Gunicorn.
+import os # <-- MUST BE AT THE TOP OF YOUR IMPORTS
+from typing import List
+# ... (rest of imports) ...
+from langchain_google_genai import ChatGoogleGenerativeAI
+# ... (rest of imports) ...
 
-# Set the key in the environment *before* initialization (safest method)
-KEY_FROM_ENV = os.getenv("GOOGLE_API_KEY")
+# --- LLM INITIALIZATION BLOCK (The Final Fix) ---
+
+# We explicitly tell the Google client where to find the key in the environment
+# The library will automatically look for GOOGLE_API_KEY if not specified, 
+# but setting it here is the safest way to ensure Gunicorn finds it.
+# We retrieve the key using os.getenv()
+API_KEY_VALUE = os.getenv("GOOGLE_API_KEY")
+
+# 1. We must ensure the client is initialized with the key
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
+    model="gemini-2.5-flash", 
     temperature=0,
-    google_api_key=KEY_FROM_ENV
+    google_api_key=API_KEY_VALUE # Passing the key retrieved from Render's environment
 )
+
+# ... (rest of the file remains the same, including the analyze_reviews function) ...
 
 # 2. Define our Prompts (The "Instructions") - THIS IS UNCHANGED
 PROMPT_TEMPLATE = """
