@@ -9,6 +9,14 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
 # 1. Initialize the LLM (The "Brain")
+import os # Add this import at the top of ai_analyzer.py if it's not there
+
+# Initialize the LLM (The "Brain")
+# We will pass the key using the official environment variable name 
+# and rely on the library to find it, which is safer in Docker/Gunicorn.
+
+# Set the key in the environment *before* initialization (safest method)
+os.environ["GOOGLE_API_KEY"] = config.GOOGLE_API_KEY
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.5-flash",
     temperature=0,
