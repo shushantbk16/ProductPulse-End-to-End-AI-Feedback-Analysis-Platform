@@ -6,7 +6,7 @@ import json
 # --- CONFIGURATION ---
 # IMPORTANT: This URL points to your FastAPI backend, which is running inside Docker.
 # Since the Docker container is running in the Codespace, 127.0.0.1:8000 is the correct address
-API_URL = "http://127.0.0.1:8000/analyze_product/"
+API_URL = "https://productpulse-end-to-end-ai-feedback.onrender.com/analyze_product/"
 
 # --- STREAMLIT PAGE CONFIGURATION ---
 st.set_page_config(
